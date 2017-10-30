@@ -67,10 +67,12 @@ setPoints <- function(el, type, value, attrs = NULL) {
     }
 
   #getElements and run the styling:
-    sapply(idTags, function(x) {obj <- DOM::getElementById(pageNo,
-                                                           x,
-                                                          response = DOM::nodePtr(),
-                                                          async = TRUE, callback = setStyles) })
+    sapply(idTags, function(x) {
+                    obj <- DOM::getElementById(pageNo,
+                                               x,
+                                               response = DOM::nodePtr(),
+                                               async = TRUE,
+                                               callback = setStyles) })
 
     } else if (type == "coords") {
     newRegion <- DOM::getElementById(pageNo,
@@ -107,9 +109,9 @@ findElement <- function(tag) {
 #' @param el element id/or part of a tag
 #' @export
 findPanel <- function(el) {
-  if (!is.character(el)) {
-    stop("Element name must be of character value!")
-  }
+    if (!is.character(el)) {
+      stop("Element name must be of character value!")
+    }
   #find grob:
   grob <- grid::grid.grep(el, grep=TRUE)
   listing <- grid::grid.ls(print=FALSE, view=TRUE)
@@ -119,4 +121,49 @@ findPanel <- function(el) {
   #plot must be drawn to browser. Must check for gridSVG mappings.
   panel <- tail(gridSVG::getSVGMappings(panelName, "vp"), n = 1)
   return(panel)
+}
+
+#' @title computeBars
+#' @description Return a set of points for highlighting bar plots/histograms
+#' @param el element id/or part of a tag
+#' @param panel panel that this element belongs to
+#' @param data the dataset to pass through
+#' @param var the group variable (that belongs to barplot/histogram)
+#' @export
+computeBars <- function(el, panel, data, var) {
+
+  if (nrow(data) == 0) {
+    pt <- ""
+  } else {
+    # the table function does not report zeroes! :(
+    u <- sort(unique(data[,var]))
+    # return sums for each: u should be in the order of the bar plot itself.
+    # TODO: sometimes it's not quite right...
+    counts <- sapply(u, function(x) {
+                        sum(data[,var] == x)
+                    })
+
+    pp <- grid::grid.get(el)
+    x <- grid::convertX(pp$x, "native", valueOnly = TRUE)
+    w <- grid::convertX(pp$width, "native", valueOnly = TRUE)
+
+    #x values: create x co-ordinates
+    n <- length(x) * 2
+    gg <- numeric(n)
+    gg1 <- ifelse((1:n) %% 2 == 0, w, 0)
+    gg2 <- rep(x, each = 2) + gg1
+    gg3 <- rep(gg2, each = 2)
+
+    # get y values: create y co-ordinates
+    ycount <- rep(counts, each = 4)
+    ll <- length(ycount)
+    y1 <- seq(1, ll, by = 4)
+    y2 <- seq(4, ll, by = 4)
+    ycount[y1] = 0
+    ycount[y2] = 0
+
+    #convert coordinates into svg:
+    pt <- convertXY(gg3, ycount, panel)
+  }
+  return(pt)
 }

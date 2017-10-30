@@ -46,4 +46,11 @@ listElements.inzplotoutput <- function(x, prefix = NULL) {
   grid::grid.ls()
 }
 
+## default:
+#' @export
+listElements.default <- function(x, prefix = NULL) {
+  grid::grid.force()
+  grid::grid.ls()
+}
+
 ##other things to try: a javascript graphing library.

@@ -2,8 +2,7 @@
 % Please edit documentation in R/draw.R
 \name{addInteractions}
 \alias{addInteractions}
-\title{addInteractions
-Function to attach interactions to a single plot object existing on a web page}
+\title{addInteractions}
 \usage{
 addInteractions(target, interactions)
 }
@@ -13,7 +12,6 @@ addInteractions(target, interactions)
 \item{interactions}{list of interactions to attach to target}
 }
 \description{
-addInteractions
 Function to attach interactions to a single plot object existing on a web page
 }
 
