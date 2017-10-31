@@ -80,6 +80,7 @@ addInteractions <- function(target, interactions) {
                       "pointer-events",
                       "all")
 
+# TODO: change this back to for looping 
   lapply(names(jsInt),
           function(nm) {
               if(is.function(match.fun(jsInt[[nm]]))) {

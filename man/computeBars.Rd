@@ -4,18 +4,23 @@
 \alias{computeBars}
 \title{computeBars}
 \usage{
-computeBars(el, panel, data, var)
+computeBars(el, panel, data, index, var)
 }
 \arguments{
 \item{el}{element id/or part of a tag}
 
-\item{panel}{panel that this element belongs to}
+\item{panel}{panel/viewport that this element belongs to}
 
 \item{data}{the dataset to pass through}
+
+\item{index}{pass a set of indices through}
 
 \item{var}{the group variable (that belongs to barplot/histogram)}
 }
 \description{
 Return a set of points for highlighting bar plots/histograms
+}
+\details{
+Subsetting by index will automatically occur within the function
 }
 

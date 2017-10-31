@@ -17,7 +17,7 @@ with a specific data frame.
 When we select over a set of points, the table will update and show the information
 about each point.
 
-![plot-to-table](./fig/plot-to-table.png)
+<img src = "./fig/plot-to-table.png" width  = "80%"> </img>
 
 ```{r, eval = FALSE}
 library(lattice)
@@ -50,7 +50,7 @@ addSelectionBox(plotNum = 1,
 
 Linking between a selection box over a set of scatter points to a bar plot.
 
-![plot-to-table](./fig/select-to-bar.png)
+<img src = "./fig/select-to-bar.png" width  = "50%"> </img>
 
 ```{r, eval = FALSE}
 # scatter and bar plot:
@@ -74,10 +74,9 @@ addPolygon("highlightRegion", panel, class = "highlight",
 
 rectangleMe <- function(index) {
   index <- as.numeric(unlist(strsplit(index, ",")))
-  selected <- mtcars[index, ]
-  # compute points for linking bar plot together:
-  pt <- computeBars("graphics-plot-2-rect-1", panel, selected, "cyl")
-  #draw bar plot that highlights selected region:
+  # compute points for linking bar plot together
+  pt <- computeBars("graphics-plot-2-rect-1", panel, mtcars, index, "cyl")
+  #draw bar plot that highlights selected region
   setPoints("highlightRegion", type = "coords", value = pt)
 
 }
@@ -139,11 +138,15 @@ int <- list(onclick = "highlightPoints")
 addInteractions(bars, int)
 ```
 
-![plot-to-table](./fig/bar-to-scatter01.png)
-![plot-to-table2](./fig/bar-to-scatter02.png)
+<img src = "./fig/bar-to-scatter01.png" width  = "50%"> </img>
+<img src = "./fig/bar-to-scatter02.png" width  = "50%"> </img>
 
 A downside to this is that it starts to crawl when there are more points/elements to handle.
 Might look into ways to try speed it up.
+
+The assumption is that interactions that you attach will correspond to elements in the same
+group (ie lies within the same SVG group element) such as a set of rectangles or a set of scatter points. These are generally expressed as a single
+object in `grid` (via `listElements`).
 
 If there is a need for targeting a single element within a group, there may be
 a way around it in the future.
@@ -155,5 +158,6 @@ a way around it in the future.
 So far, we've established that the selection box feature only works over points (that is,
 only restricted to scatter plots and dot plots). What if you could select over aggregated
 plots (i.e. box plots, density plots...?)
+
 - Linking between facetted/trellis plots produced by `lattice`
 - Linking more than 2 plots

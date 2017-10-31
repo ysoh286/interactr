@@ -56,14 +56,13 @@ setPoints <- function(el, type, value, attrs = NULL) {
     names(attrs) <- gsub("[.]", "-", names(attrs))
 
     setStyles <- function(obj) {
-      lapply(names(attrs), function(nm) {
-         DOM::setAttribute(pageNo,
-                           obj,
-                           nm,
-                           attrs[[nm]],
-                           async = TRUE)
-        invisible(NULL)
-      })
+      for (nm in names(attrs)) {
+        DOM::setAttribute(pageNo,
+                          obj,
+                          nm,
+                          attrs[[nm]],
+                          async = TRUE)
+      }
     }
 
   #getElements and run the styling:
@@ -126,21 +125,22 @@ findPanel <- function(el) {
 #' @title computeBars
 #' @description Return a set of points for highlighting bar plots/histograms
 #' @param el element id/or part of a tag
-#' @param panel panel that this element belongs to
+#' @param panel panel/viewport that this element belongs to
 #' @param data the dataset to pass through
+#' @param index pass a set of indices through
 #' @param var the group variable (that belongs to barplot/histogram)
+#' @details Subsetting by index will automatically occur within the function
 #' @export
-computeBars <- function(el, panel, data, var) {
+computeBars <- function(el, panel, data, index, var) {
 
   if (nrow(data) == 0) {
     pt <- ""
   } else {
     # the table function does not report zeroes! :(
     u <- sort(unique(data[,var]))
-    # return sums for each: u should be in the order of the bar plot itself.
-    # TODO: sometimes it's not quite right...
+    # return sums for each: u should be in the order of the bar plot itself
     counts <- sapply(u, function(x) {
-                        sum(data[,var] == x)
+                        sum(data[index,var] == x)
                     })
 
     pp <- grid::grid.get(el)
