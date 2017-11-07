@@ -1,8 +1,11 @@
 Package: interactr
 Title: A developmental package for creating simple interactive plots in R
 Version: 0.0.1
-Author: Yu Han Soh
-Maintainer: Yu Han Soh <ysoh286@aucklanduni.ac.nz>
+Authors@R: person(
+    "Yu Han",
+    "Soh",
+    email = "ysoh286@aucklanduni.ac.nz",
+    role  = c("aut", "cre"))
 Description: A package designed to allow users to create their own interactive visuals.
 License: GPL-3
 Encoding: UTF-8
@@ -10,6 +13,5 @@ LazyData: true
 Imports: grid, XML, gridSVG
 Depends: DOM
 Remotes: pmur002/DOM
-Suggests: gridGraphics, knitr, rmarkdown
-VignetteBuilder: knitr
+Suggests: gridGraphics
 RoxygenNote: 5.0.1
